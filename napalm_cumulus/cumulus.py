@@ -191,3 +191,24 @@ class CumulusDriver(NetworkDriver):
         facts['serial_number'] = py23_compat.text_type(serial_number)
         facts['interface_list'] = interfaces.keys()
         return facts
+
+    def _oc_all_config(self):
+        config_string_list = []
+
+        # Get running config from NCLU.
+        running = self._send_command("net show configuration")
+
+        # Get interface config.
+        interface_config = json.loads(self._send_command("net show interface json"))
+
+        running_config_list = []
+        for line in running.splitlines():
+            running_config_list.append(line)
+            if 'interface' in line:
+                interface = line.split()[1]
+                state = interface_config.get(interface)['linkstate']
+                running_config_list.append('  {0}'.format(state))
+                mtu = interface_config.get(interface)['iface_obj']['mtu']
+                running_config_list.append('  mtu {0}'.format(mtu))
+
+        return '\n'.join(running_config_list)
