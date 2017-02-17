@@ -31,10 +31,10 @@ class TestConfigCumulusDriver(unittest.TestCase, TestConfigNetworkDriver):
         password = 'vagrant'
         cls.vendor = 'cumulus'
 
-        optional_args = {'port': 12443, }
+        optional_args = {'port': 65022, }
         cls.device = cumulus.CumulusDriver(hostname, username, password, timeout=60,
-                                             optional_args=optional_args)
+                                           optional_args=optional_args)
         cls.device.open()
 
-        cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
+        cls.device.load_merge_candidate(filename='%s/initial.conf' % cls.vendor)
         cls.device.commit_config()

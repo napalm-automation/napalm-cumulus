@@ -33,7 +33,7 @@ from napalm_base.base import NetworkDriver
 from napalm_base.exceptions import (
     ConnectionException,
     MergeConfigException,
-    ReplaceConfigException
+    #  ReplaceConfigException
     )
 
 

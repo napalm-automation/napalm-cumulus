@@ -35,7 +35,12 @@ class PatchedCumulusDriver(cumulus.CumulusDriver):
         super().__init__(hostname, username, password, timeout, optional_args)
 
         self.patched_attrs = ['device']
+
+    def open(self):
         self.device = FakeCumulusDevice()
+
+    def is_alive(self):
+        return {'is_alive': True}
 
 
 class FakeCumulusDevice(BaseTestDouble):
@@ -55,3 +60,6 @@ class FakeCumulusDevice(BaseTestDouble):
                 result.append({'output': self.read_txt_file(full_path)})
 
         return result
+
+    def disconnect(self):
+        pass
