@@ -23,6 +23,7 @@ from __future__ import unicode_literals
 
 import re
 import json
+import ipaddress
 from datetime import datetime
 from pytz import timezone
 
@@ -481,3 +482,29 @@ class CumulusDriver(NetworkDriver):
             for interface in interfaces.keys():
                 interfaces[interface]['last_flapped'] = -1
         return interfaces
+    
+    def get_interfaces_ip(self):
+        interfaces_ip = {}
+        # Get 'net show interface all json' output.
+        output = self._send_command('sudo net show interface all json')
+        # Handling bad send_command_timing return output.
+        try:
+            output_json = json.loads(output)
+        except ValueError:
+            output_json = json.loads(self.device.send_command('sudo net show interface all json'))
+
+        for interface in output_json:
+            interfaces_ip[interface] = {}
+            for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
+                if ipaddress.ip_interface(unicode(ip_address)).version == 4:
+                    if not 'ipv4' in interfaces_ip[interface]:
+                        interfaces_ip[interface]['ipv4']={ip_address.split('/')[0]:{'prefix_length':ip_address.split('/')[1]}}
+                    else:
+                        interfaces_ip[interface]['ipv4'][ip_address.split('/')[0]]={'prefix_length':ip_address.split('/')[1]}
+                if ipaddress.ip_interface(unicode(ip_address)).version == 6:
+                    if not 'ipv6' in interfaces_ip[interface]:
+                        interfaces_ip[interface]['ipv6']={ip_address.split('/')[0]:{'prefix_length':ip_address.split('/')[1]}}
+                    else:
+                        interfaces_ip[interface]['ipv6'][ip_address.split('/')[0]]={'prefix_length':ip_address.split('/')[1]}
+                
+        return interfaces_ip
