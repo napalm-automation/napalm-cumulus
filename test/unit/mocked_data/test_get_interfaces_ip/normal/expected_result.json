@@ -1,0 +1,1 @@
+{u'lo': {u'ipv4': {u'192.168.100.1': {u'prefix_length': u'24'}, u'192.168.101.1': {u'prefix_length': u'24'}, u'127.0.0.1': {u'prefix_length': u'8'}}, u'ipv6': {u'::1': {u'prefix_length': u'128'}}}, u'swp1': {}, u'eth0': {u'ipv4': {u'192.168.0.136': {u'prefix_length': u'24'}}}}
