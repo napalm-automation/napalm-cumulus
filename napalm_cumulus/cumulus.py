@@ -485,8 +485,7 @@ class CumulusDriver(NetworkDriver):
         return interfaces
 
     def get_interfaces_ip(self):
-        #interfaces_ip = {}
-        # Get 'net show interface all json' output.
+        # Get net show interface all json output.
         output = self._send_command('sudo net show interface all json')
         # Handling bad send_command_timing return output.
         try:
@@ -494,13 +493,13 @@ class CumulusDriver(NetworkDriver):
         except ValueError:
             output_json = json.loads(self.device.send_command('sudo net show interface all json'))
 
-        rec_dd = lambda: defaultdict(rec_dd)
+        def rec_dd(): return defaultdict(rec_dd)
         interfaces_ip = rec_dd()
 
         for interface in output_json:
             for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
                 ip_version = 'ipv{}'.format(ipaddress.ip_interface(py23_compat.text_type(ip_address)).version)
                 ip, prefix = ip_address.split('/')
-                interfaces_ip[interface][ip_version][ip]={'prefix_length':prefix}
+                interfaces_ip[interface][ip_version][ip] = {'prefix_length': int(prefix)}
 
         return interfaces_ip
