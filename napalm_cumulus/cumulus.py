@@ -498,8 +498,9 @@ class CumulusDriver(NetworkDriver):
 
         for interface in output_json:
             for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
-                ip_version = 'ipv{}'.format(ipaddress.ip_interface(py23_compat.text_type(ip_address)).version)
+                ip_ver = ipaddress.ip_interface(py23_compat.text_type(ip_address)).version
+                ip_ver = 'ipv{}'.format(ip_ver)
                 ip, prefix = ip_address.split('/')
-                interfaces_ip[interface][ip_version][ip] = {'prefix_length': int(prefix)}
+                interfaces_ip[interface][ip_ver][ip] = {'prefix_length': int(prefix)}
 
         return interfaces_ip
