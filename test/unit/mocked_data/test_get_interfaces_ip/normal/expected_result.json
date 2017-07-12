@@ -1,1 +1,29 @@
-{u'lo': {u'ipv4': {u'192.168.100.1': {u'prefix_length': u'24'}, u'192.168.101.1': {u'prefix_length': u'24'}, u'127.0.0.1': {u'prefix_length': u'8'}}, u'ipv6': {u'::1': {u'prefix_length': u'128'}}}, u'swp1': {}, u'eth0': {u'ipv4': {u'192.168.0.136': {u'prefix_length': u'24'}}}}
+{
+	"lo": {
+		"ipv4": {
+			"192.168.100.1": {
+				"prefix_length": "24"
+			},
+			"192.168.101.1": {
+				"prefix_length": "24"
+			},
+			"127.0.0.1": {
+				"prefix_length": "8"
+			}
+		},
+		"ipv6": {
+			"::1": {
+				"prefix_length": "128"
+			}
+		}
+	},
+	"swp1": {
+	},
+	"eth0": {
+		"ipv4": {
+			"192.168.0.136": {
+				"prefix_length": "24"
+			}
+		}
+	}
+}
