@@ -497,10 +497,13 @@ class CumulusDriver(NetworkDriver):
         interfaces_ip = rec_dd()
 
         for interface in output_json:
-            for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
-                ip_ver = ipaddress.ip_interface(py23_compat.text_type(ip_address)).version
-                ip_ver = 'ipv{}'.format(ip_ver)
-                ip, prefix = ip_address.split('/')
-                interfaces_ip[interface][ip_ver][ip] = {'prefix_length': int(prefix)}
+            if not output_json[interface]['iface_obj']['ip_address']['allentries']:
+                interfaces_ip[interface]
+            else: 
+                for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
+                    ip_ver = ipaddress.ip_interface(py23_compat.text_type(ip_address)).version
+                    ip_ver = 'ipv{}'.format(ip_ver)
+                    ip, prefix = ip_address.split('/')
+                    interfaces_ip[interface][ip_ver][ip] = {'prefix_length': int(prefix)}
 
         return interfaces_ip
