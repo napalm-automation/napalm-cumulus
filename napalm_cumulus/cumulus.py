@@ -499,7 +499,7 @@ class CumulusDriver(NetworkDriver):
         for interface in output_json:
             if not output_json[interface]['iface_obj']['ip_address']['allentries']:
                 interfaces_ip[interface]
-            else: 
+            else:
                 for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
                     ip_ver = ipaddress.ip_interface(py23_compat.text_type(ip_address)).version
                     ip_ver = 'ipv{}'.format(ip_ver)
