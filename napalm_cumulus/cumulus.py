@@ -513,7 +513,7 @@ class CumulusDriver(NetworkDriver):
         vrf = 'global'
         bgp_neighbors = {vrf: {}}
         bgp_neighbor = {}
-        supported_afis = [ 'ipv4 unicast','ipv6 unicast']
+        supported_afis = ['ipv4 unicast','ipv6 unicast']
         bgp_summary_output = self._send_command ('net show bgp summary json')
         dev_bgp_summary = json.loads (bgp_summary_output)
         bgp_neighbors_output = self._send_command ('net show bgp neighbor json')
@@ -535,7 +535,6 @@ class CumulusDriver(NetworkDriver):
                 else:
                     is_up = False
                     uptime = -1
-                    accepted_prefixes = -1
                 if dev_bgp_neighbors[peer].get('adminShutDown', False):
                     is_enabled = False
                 else:
@@ -545,18 +544,22 @@ class CumulusDriver(NetworkDriver):
                 bgp_neighbor['uptime'] = uptime /1000
                 bgp_address_family = {}
                 bgp_neighbor.setdefault("address_family",{})
-
                 for af , af_details in dev_bgp_neighbors[peer]['addressFamilyInfo'].iteritems():
                     af = af.lower()
                     if not (af in supported_afis):
                         continue
                     route_info = {}
-                    route_info['received_prefixes'] = dev_bgp_summary[af]['peers'][peer]['prefixReceivedCount']
                     dev_bgp_peer_advertised_routes = self._send_command ('net show bgp {} neighbor {} advertised-routes |grep "Total number of prefixes"'.format(af, peer)).strip().split()[-1]
-                    route_info['sent_prefixes'] = dev_bgp_peer_advertised_routes
+                    if not dev_bgp_peer_advertised_routes.isnumeric() :
+                        dev_bgp_peer_advertised_routes = 0
+                    if not is_enabled:
+                        dev_bgp_summary[af]['peers'][peer]['prefixReceivedCount'] = -1
+                        dev_bgp_peer_advertised_routes = -1
+                        af_details['acceptedPrefixCounter'] = -1
+                    route_info['received_prefixes'] = dev_bgp_summary[af]['peers'][peer]['prefixReceivedCount']
+                    route_info['sent_prefixes'] = int(dev_bgp_peer_advertised_routes)
                     route_info['accepted_prefixes'] = af_details['acceptedPrefixCounter']
                     bgp_neighbor['address_family'][af.split()[0]] = route_info
-
                 bgp_neighbors[vrf]['peers'][peer] = bgp_neighbor
 
         return  bgp_neighbors
