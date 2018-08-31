@@ -11,7 +11,7 @@ __author__ = 'Gabriele Gerbino <gabrielegerbino@gmail.com>'
 
 setup(
     name="napalm-cumulus",
-    version="0.1.1",
+    version="0.3.0",
     packages=find_packages(),
     author="Gabriele Gerbino",
     author_email="gabrielegerbino@gmail.com",
