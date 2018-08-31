@@ -1,4 +1,3 @@
 napalm_base
-pip>=10
 netmiko>=1.1.0
 pytz
