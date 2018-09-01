@@ -16,6 +16,7 @@
 import pkg_resources
 from napalm_cumulus.cumulus import CumulusDriver
 
+
 try:
     __version__ = pkg_resources.get_distribution('napalm-cumulus').version
 except pkg_resources.DistributionNotFound:
