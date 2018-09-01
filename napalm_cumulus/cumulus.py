@@ -364,7 +364,7 @@ class CumulusDriver(NetworkDriver):
 
             return ping_result
 
-    def _get_interface_neighbors(self, neighbors_list):
+    def get_interface_neighbors(self, neighbors_list):
         neighbors = []
         for neighbor in neighbors_list:
             temp = {}
