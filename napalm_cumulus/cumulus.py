@@ -248,7 +248,7 @@ class CumulusDriver(NetworkDriver):
                 # 'remote' contains '*' if the machine synchronized with NTP server
                 synchronized = "*" in remote
 
-                match = re.search(r"(\d+\.\d+\.\d+\.\d+)", remote)
+                match = re.search(r'(\d+\.\d+\.\d+\.\d+)', remote)
                 ip = match.group(1)
 
                 when = when if when != '-' else 0
