@@ -134,7 +134,7 @@ class CumulusDriver(NetworkDriver):
     def compare_config(self):
         if self.loaded:
             diff = self._send_command('sudo net pending')
-            return re.sub(r'\x1b\[\d+m]', '', diff)
+            return re.sub(r'\x1b[\d+m]', '', diff)
         return ''
 
     def commit_config(self):
