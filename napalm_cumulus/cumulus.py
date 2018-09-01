@@ -143,7 +143,6 @@ class CumulusDriver(NetworkDriver):
             self.changed = True
             self.loaded = False
         
-
     def rollback(self):
         if self.changed:
             self._send_command('sudo net rollback last')
