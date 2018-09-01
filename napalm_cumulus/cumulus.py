@@ -137,7 +137,7 @@ class CumulusDriver(NetworkDriver):
             return re.sub(r'\x1b\[\d+m', '', diff)
         return ''
 
-    def commit_config(self):
+    def commit_config(self, message=""):
         if self.loaded:
             self._send_command('sudo net commit')
             self.changed = True
