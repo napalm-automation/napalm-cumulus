@@ -17,8 +17,8 @@
 import unittest
 
 from napalm_cumulus import cumulus
-from napalm_base import exceptions
-from napalm_base.test.base import TestConfigNetworkDriver
+from napalm.base import exceptions
+from napalm.base.test.base import TestConfigNetworkDriver
 
 
 class TestConfigCumulusDriver(unittest.TestCase, TestConfigNetworkDriver):
