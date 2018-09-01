@@ -142,7 +142,7 @@ class CumulusDriver(NetworkDriver):
             self._send_command('sudo net commit')
             self.changed = True
             self.loaded = False
-        return ''
+        
 
     def rollback(self):
         if self.changed:

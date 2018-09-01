@@ -2,3 +2,4 @@ setuptools>=38.4.0
 napalm>=2.0.0
 netmiko>=2.2.2
 pytz
+pytest
