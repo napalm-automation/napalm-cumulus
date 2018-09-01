@@ -1,9 +1,4 @@
 setuptools>=38.4.0
-<<<<<<< HEAD
 napalm>=2.0.0
 netmiko>=2.2.2
-=======
-napalm
-netmiko>=1.4.2
->>>>>>> 1993e8da9892b0b13e4f79574d3bc660015710f6
 pytz
