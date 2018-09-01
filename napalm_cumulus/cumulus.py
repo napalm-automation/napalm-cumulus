@@ -142,6 +142,7 @@ class CumulusDriver(NetworkDriver):
             self._send_command('sudo net commit')
             self.changed = True
             self.loaded = False
+        return ''
 
     def rollback(self):
         if self.changed:
@@ -364,7 +365,7 @@ class CumulusDriver(NetworkDriver):
 
             return ping_result
 
-    def get_interface_neighbors(self, neighbors_list):
+    def _get_interface_neighbors(self, neighbors_list):
         neighbors = []
         for neighbor in neighbors_list:
             temp = {}
@@ -384,7 +385,7 @@ class CumulusDriver(NetworkDriver):
             lldp_output = json.loads(self.device.send_command(command))
 
         for interface in lldp_output:
-            lldp[interface] = self.get_interface_neighbors(
+            lldp[interface] = self._get_interface_neighbors(
                                     lldp_output[interface]['iface_obj']['lldp'])
         return lldp
 
