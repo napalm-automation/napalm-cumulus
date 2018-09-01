@@ -1,3 +1,3 @@
-napalm_base
+napalm==2.*
 netmiko>=1.1.0
 pytz
