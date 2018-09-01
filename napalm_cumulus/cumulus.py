@@ -384,7 +384,7 @@ class CumulusDriver(NetworkDriver):
             lldp_output = json.loads(self.device.send_command(command))
 
         for interface in lldp_output:
-            lldp[interface] = self._get_interface_neighbors(
+            lldp[interface] = self.get_interface_neighbors(
                                     lldp_output[interface]['iface_obj']['lldp'])
         return lldp
 
