@@ -1,18 +1,18 @@
 """setup.py file."""
 
-import uuid
 
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
+
+with open("requirements.txt", "r") as fs:
+    reqs = [r for r in fs.read().splitlines() if (len(r) > 0 and not r.startswith("#"))]
+    
 
 __author__ = 'Gabriele Gerbino <gabrielegerbino@gmail.com>'
 
-install_reqs = parse_requirements('requirements.txt', session=uuid.uuid1())
-reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name="napalm-cumulus",
-    version="0.1.0",
+    version="0.2.0",
     packages=find_packages(),
     author="Gabriele Gerbino",
     author_email="gabrielegerbino@gmail.com",
