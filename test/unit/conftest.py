@@ -7,7 +7,7 @@ from napalm.base.test import conftest as parent_conftest
 
 from napalm.base.test.double import BaseTestDouble
 
-from napalm.cumulus import cumulus
+from napalm_cumulus import cumulus
 
 
 @pytest.fixture(scope='class')
