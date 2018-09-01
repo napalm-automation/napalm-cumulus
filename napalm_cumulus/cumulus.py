@@ -134,7 +134,7 @@ class CumulusDriver(NetworkDriver):
     def compare_config(self):
         if self.loaded:
             diff = self._send_command('sudo net pending')
-            return re.sub(r'\x1b[\d+m]', '', diff)
+            return re.sub(r'\x1b[\d+m', '', diff)
         return ''
 
     def commit_config(self):
@@ -248,7 +248,7 @@ class CumulusDriver(NetworkDriver):
                 # 'remote' contains '*' if the machine synchronized with NTP server
                 synchronized = "*" in remote
 
-                match = re.search("(\d+\.\d+\.\d+\.\d+)", remote)
+                match = re.search(r"(\d+\.\d+\.\d+\.\d+)", remote)
                 ip = match.group(1)
 
                 when = when if when != '-' else 0
@@ -324,7 +324,7 @@ class CumulusDriver(NetworkDriver):
             else:
                 rtt_info = rtt_info[-2]
 
-            match = re.search("([\d\.]+)/([\d\.]+)/([\d\.]+)/([\d\.]+)", rtt_info)
+            match = re.search(r"([\d\.]+)/([\d\.]+)/([\d\.]+)/([\d\.]+)", rtt_info)
 
             if match is not None:
                 rtt_min = float(match.group(1))
@@ -341,7 +341,7 @@ class CumulusDriver(NetworkDriver):
             response_info = output_ping.split("\n")
 
             for res in response_info:
-                match_res = re.search("from\s([\d\.]+).*time=([\d\.]+)", res)
+                match_res = re.search(r"from\s([\d\.]+).*time=([\d\.]+)", res)
                 if match_res is not None:
                     ping_responses.append(
                       {
