@@ -541,7 +541,6 @@ class CumulusDriver(NetworkDriver):
                 bgp_neighbor['is_up'] = is_up
                 bgp_neighbor['is_enabled'] = is_enabled
                 bgp_neighbor['uptime'] = uptime / 1000
-                bgp_address_family = {}
                 bgp_neighbor.setdefault("address_family", {})
                 for af, af_details in dev_bgp_neighbors[peer]['addressFamilyInfo'].iteritems():
                     af = af.lower()
