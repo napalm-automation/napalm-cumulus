@@ -1,0 +1,74 @@
+{
+"ipv4 unicast" : {
+  "routerId":"10.10.10.1",
+  "as":10,
+  "vrfId":0,
+  "vrfName":"Default",
+  "tableVersion":63,
+  "ribCount":5,
+  "ribMemory":760,
+  "peerCount":2,
+  "peerMemory":39472,
+  "peers":{
+    "1.1.1.2":{
+      "hostname":"rtr2",
+      "remoteAs":20,
+      "version":4,
+      "msgRcvd":607831,
+      "msgSent":607865,
+      "tableVersion":0,
+      "outq":0,
+      "inq":0,
+      "peerUptime":"02w3d12h",
+      "peerUptimeMsec":1514864000,
+      "peerUptimeEstablishedEpoch":1535667688,
+      "prefixReceivedCount":2,
+      "state":"Established",
+      "idType":"ipv4"
+    }
+  },
+  "totalPeers":1,
+  "dynamicPeers":0,
+  "bestPath":{
+    "multiPathRelax":"false"
+  }
+}
+,
+"ipv6 unicast" : {
+  "routerId":"10.10.10.1",
+  "as":10,
+  "vrfId":0,
+  "vrfName":"Default",
+  "tableVersion":58,
+  "ribCount":7,
+  "ribMemory":1064,
+  "peerCount":2,
+  "peerMemory":39472,
+  "peers":{
+    "2012:1:1:1::2":{
+      "hostname":"rtr3",
+      "remoteAs":30,
+      "version":4,
+      "msgRcvd":608136,
+      "msgSent":608191,
+      "tableVersion":0,
+      "outq":0,
+      "inq":0,
+      "peerUptime":"00:00:22",
+      "peerUptimeMsec":22000,
+      "peerUptimeEstablishedEpoch":1537182530,
+      "prefixReceivedCount":2,
+      "state":"Established",
+      "idType":"ipv6"
+    }
+  },
+  "totalPeers":1,
+  "dynamicPeers":0,
+  "bestPath":{
+    "multiPathRelax":"false"
+  }
+}
+,
+"l2vpn evpn" : {}
+
+}
