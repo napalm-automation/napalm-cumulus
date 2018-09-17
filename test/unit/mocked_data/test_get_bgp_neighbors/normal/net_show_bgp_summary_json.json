@@ -1,30 +1,90 @@
+{
+"ipv4 unicast" : {
+  "routerId":"10.10.10.1",
+  "as":10,
+  "vrfId":0,
+  "vrfName":"Default",
+  "tableVersion":63,
+  "ribCount":5,
+  "ribMemory":760,
+  "peerCount":2,
+  "peerMemory":39472,
+  "peers":{
+    "1.1.1.2":{
+      "hostname":"rtr2",
+      "remoteAs":20,
+      "version":4,
+      "msgRcvd":604442,
+      "msgSent":604477,
+      "tableVersion":0,
+      "outq":0,
+      "inq":0,
+      "peerUptime":"02w3d09h",
+      "peerUptimeMsec":1504682000,
+      "peerUptimeEstablishedEpoch":1535667688,
+      "prefixReceivedCount":2,
+      "state":"Established",
+      "idType":"ipv4"
+    },
+    "2012:1:1:1::2":{
+      "hostname":"rtr3",
+      "remoteAs":30,
+      "version":4,
+      "msgRcvd":604737,
+      "msgSent":604790,
+      "tableVersion":0,
+      "outq":0,
+      "inq":0,
+      "peerUptime":"02w3d22h",
+      "peerUptimeMsec":1550976000,
+      "peerUptimeEstablishedEpoch":1535621394,
+      "prefixReceivedCount":0,
+      "state":"Established",
+      "idType":"ipv6"
+    }
+  },
+  "totalPeers":2,
+  "dynamicPeers":0,
+  "bestPath":{
+    "multiPathRelax":"false"
+  }
+}
+,
+"ipv6 unicast" : {
+  "routerId":"10.10.10.1",
+  "as":10,
+  "vrfId":0,
+  "vrfName":"Default",
+  "tableVersion":50,
+  "ribCount":7,
+  "ribMemory":1064,
+  "peerCount":2,
+  "peerMemory":39472,
+  "peers":{
+    "2012:1:1:1::2":{
+      "hostname":"rtr3",
+      "remoteAs":30,
+      "version":4,
+      "msgRcvd":604737,
+      "msgSent":604790,
+      "tableVersion":0,
+      "outq":0,
+      "inq":0,
+      "peerUptime":"02w3d22h",
+      "peerUptimeMsec":1550976000,
+      "peerUptimeEstablishedEpoch":1535621395,
+      "prefixReceivedCount":2,
+      "state":"Established",
+      "idType":"ipv6"
+    }
+  },
+  "totalPeers":1,
+  "dynamicPeers":0,
+  "bestPath":{
+    "multiPathRelax":"false"
+  }
+}
+,
+"l2vpn evpn" : {}
 
-show bgp ipv4 unicast summary
-=============================
-BGP router identifier 10.10.10.1, local AS number 10 vrf-id 0
-BGP table version 63
-RIB entries 5, using 760 bytes of memory
-Peers 2, using 39 KiB of memory
-
-Neighbor            V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
-rtr2(1.1.1.2)       4         20  604248  604283        0    0    0 02w3d09h            2
-rtr3(2012:1:1:1::2) 4         30  604542  604596        0    0    0 02w3d22h            0
-
-Total number of neighbors 2
-
-
-show bgp ipv6 unicast summary
-=============================
-BGP router identifier 10.10.10.1, local AS number 10 vrf-id 0
-BGP table version 50
-RIB entries 7, using 1064 bytes of memory
-Peers 2, using 39 KiB of memory
-
-Neighbor            V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
-rtr3(2012:1:1:1::2) 4         30  604542  604596        0    0    0 02w3d22h            2
-
-Total number of neighbors 1
-
-
-show bgp l2vpn evpn summary
-===========================
+}

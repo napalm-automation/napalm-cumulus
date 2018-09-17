@@ -549,7 +549,8 @@ class CumulusDriver(NetworkDriver):
                         continue
                     route_info = {}
                     dev_bgp_peer_advertised_routes = self._send_command(
-                        'net show bgp {} neighbor {} advertised-routes |grep "Total number of prefixes"'
+                        'net show bgp {} neighbor {} advertised-routes | grep 
+                        "Total number of prefixes"'
                         .format(af, peer)).strip().split()[-1]
                     if not dev_bgp_peer_advertised_routes.isnumeric():
                         dev_bgp_peer_advertised_routes = 0
@@ -557,7 +558,8 @@ class CumulusDriver(NetworkDriver):
                         dev_bgp_summary[af]['peers'][peer]['prefixReceivedCount'] = -1
                         dev_bgp_peer_advertised_routes = -1
                         af_details['acceptedPrefixCounter'] = -1
-                    route_info['received_prefixes'] = dev_bgp_summary[af]['peers'][peer]['prefixReceivedCount']
+                    route_info['received_prefixes'] = dev_bgp_summary[af]
+                    ['peers'][peer]['prefixReceivedCount']
                     route_info['sent_prefixes'] = int(dev_bgp_peer_advertised_routes)
                     route_info['accepted_prefixes'] = af_details['acceptedPrefixCounter']
                     bgp_neighbor['address_family'][af.split()[0]] = route_info
