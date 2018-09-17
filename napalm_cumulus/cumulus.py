@@ -565,4 +565,3 @@ class CumulusDriver(NetworkDriver):
                 bgp_neighbors[vrf]['peers'][peer] = bgp_neighbor
 
         return bgp_neighbors
-
