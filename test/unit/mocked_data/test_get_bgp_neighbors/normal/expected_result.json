@@ -6,7 +6,7 @@
                     "ipv4": {
                         "accepted_prefixes": 2, 
                         "received_prefixes": 2, 
-                        "sent_prefixes": 3
+                        "sent_prefixes": 0
                     }
                 }, 
                 "description": "rtr2", 
@@ -15,14 +15,14 @@
                 "local_as": 10, 
                 "remote_as": 20, 
                 "remote_id": "200.200.200.1", 
-                "uptime": 1515292
+                "uptime": 1514890
             }, 
             "2012:1:1:1::2": {
                 "address_family": {
                     "ipv6": {
                         "accepted_prefixes": 2, 
                         "received_prefixes": 2, 
-                        "sent_prefixes": 4
+                        "sent_prefixes": 0
                     }
                 }, 
                 "description": "rtr3", 
@@ -31,7 +31,7 @@
                 "local_as": 10, 
                 "remote_as": 30, 
                 "remote_id": "100.100.100.4", 
-                "uptime": 450
+                "uptime": 48
             }
         }, 
         "router_id": "10.10.10.1"
