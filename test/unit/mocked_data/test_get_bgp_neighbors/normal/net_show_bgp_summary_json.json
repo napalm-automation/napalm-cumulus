@@ -1,0 +1,30 @@
+
+show bgp ipv4 unicast summary
+=============================
+BGP router identifier 10.10.10.1, local AS number 10 vrf-id 0
+BGP table version 63
+RIB entries 5, using 760 bytes of memory
+Peers 2, using 39 KiB of memory
+
+Neighbor            V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
+rtr2(1.1.1.2)       4         20  604248  604283        0    0    0 02w3d09h            2
+rtr3(2012:1:1:1::2) 4         30  604542  604596        0    0    0 02w3d22h            0
+
+Total number of neighbors 2
+
+
+show bgp ipv6 unicast summary
+=============================
+BGP router identifier 10.10.10.1, local AS number 10 vrf-id 0
+BGP table version 50
+RIB entries 7, using 1064 bytes of memory
+Peers 2, using 39 KiB of memory
+
+Neighbor            V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
+rtr3(2012:1:1:1::2) 4         30  604542  604596        0    0    0 02w3d22h            2
+
+Total number of neighbors 1
+
+
+show bgp l2vpn evpn summary
+===========================
