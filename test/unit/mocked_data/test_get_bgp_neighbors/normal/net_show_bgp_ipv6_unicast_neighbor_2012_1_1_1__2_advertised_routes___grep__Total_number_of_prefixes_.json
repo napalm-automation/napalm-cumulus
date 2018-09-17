@@ -1,5 +1,5 @@
 {
-  "bgpTableVersion":50,
+  "bgpTableVersion":58,
   "bgpLocalRouterId":"10.10.10.1",
   "bgpStatusCodes":{
     "suppressed":"s",
