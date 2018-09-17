@@ -9,7 +9,7 @@
     "remoteRouterId":"200.200.200.1",
     "bgpState":"Established",
     "bgpTimerUp":1506348000,
-    "bgpTimerUpMsec":1552324000,
+    "bgpTimerUpMsec":1506030000,
     "bgpTimerUpString":"02w3d10h",
     "bgpTimerUpEstablishedEpoch":1535667688,
     "bgpTimerLastRead":1000,
