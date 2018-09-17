@@ -513,9 +513,9 @@ class CumulusDriver(NetworkDriver):
         bgp_neighbors = {vrf: {}}
         bgp_neighbor = {}
         supported_afis = ['ipv4 unicast', 'ipv6 unicast']
-        bgp_summary_output = self._send_command('sudo net show bgp summary json')
+        bgp_summary_output = self._send_command('net show bgp summary json')
         dev_bgp_summary = json.loads(bgp_summary_output)
-        bgp_neighbors_output = self._send_command('sudo net show bgp neighbor json')
+        bgp_neighbors_output = self._send_command('net show bgp neighbor json')
         dev_bgp_neighbors = json.loads(bgp_neighbors_output)
         for afi in dev_bgp_summary:
             if not (afi.lower() in supported_afis):
@@ -551,17 +551,18 @@ class CumulusDriver(NetworkDriver):
                         self._send_command('net show bgp {} neighbor {} '
                                            'advertised-routes | grep "Total number of prefixes"'
                                            .format(af, peer)).strip().split()[-1]
-                    if not dev_bgp_peer_advertised_routes.isnumeric():
+                    if not unicode(dev_bgp_peer_advertised_routes).isnumeric():
                         dev_bgp_peer_advertised_routes = 0
                     if not is_enabled:
                         dev_bgp_summary[af]['peers'][peer]['prefixReceivedCount'] = -1
                         dev_bgp_peer_advertised_routes = -1
                         af_details['acceptedPrefixCounter'] = -1
-                    route_info['received_prefixes'] = dev_bgp_summary[af]
-                    ['peers'][peer]['prefixReceivedCount']
+                    route_info['received_prefixes'] = dev_bgp_summary[af]\
+                                ['peers'][peer]['prefixReceivedCount']
                     route_info['sent_prefixes'] = int(dev_bgp_peer_advertised_routes)
                     route_info['accepted_prefixes'] = af_details['acceptedPrefixCounter']
                     bgp_neighbor['address_family'][af.split()[0]] = route_info
                 bgp_neighbors[vrf]['peers'][peer] = bgp_neighbor
 
         return bgp_neighbors
+
