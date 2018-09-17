@@ -513,9 +513,9 @@ class CumulusDriver(NetworkDriver):
         bgp_neighbors = {vrf: {}}
         bgp_neighbor = {}
         supported_afis = ['ipv4 unicast', 'ipv6 unicast']
-        bgp_summary_output = self._send_command('net show bgp summary json')
+        bgp_summary_output = self._send_command('sudo net show bgp summary json')
         dev_bgp_summary = json.loads(bgp_summary_output)
-        bgp_neighbors_output = self._send_command('net show bgp neighbor json')
+        bgp_neighbors_output = self._send_command('sudo net show bgp neighbor json')
         dev_bgp_neighbors = json.loads(bgp_neighbors_output)
         for afi in dev_bgp_summary:
             if not (afi.lower() in supported_afis):

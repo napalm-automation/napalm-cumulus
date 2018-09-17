@@ -1,0 +1,207 @@
+{
+  "1.1.1.2":{
+    "remoteAs":20,
+    "localAs":10,
+    "nbrExternalLink":true,
+    "nbrDesc":"rtr2",
+    "hostname":"rtr2",
+    "bgpVersion":4,
+    "remoteRouterId":"200.200.200.1",
+    "bgpState":"Established",
+    "bgpTimerUp":1506348000,
+    "bgpTimerUpMsec":1552324000,
+    "bgpTimerUpString":"02w3d10h",
+    "bgpTimerUpEstablishedEpoch":1535667688,
+    "bgpTimerLastRead":1000,
+    "bgpTimerLastWrite":3000,
+    "bgpInUpdateElapsedTimeMsecs":37547000,
+    "bgpTimerHoldTimeMsecs":9000,
+    "bgpTimerKeepAliveIntervalMsecs":3000,
+    "neighborCapabilities":{
+      "4byteAs":"advertisedAndReceived",
+      "addPath":{
+        "IPv4 Unicast":{
+          "rxAdvertisedAndReceived":true
+        }
+      },
+      "routeRefresh":"advertisedAndReceivedOldNew",
+      "multiprotocolExtensions":{
+        "IPv4 Unicast":{
+          "advertisedAndReceived":true
+        }
+      },
+      "hostName":{
+        "advHostName":"rtr1",
+        "advDomainName":"n\/a",
+        "rcvHostName":"rtr2",
+        "rcvDomainName":"n\/a"
+      },
+      "gracefulRestart":"advertisedAndReceived",
+      "gracefulRestartRemoteTimerMsecs":120000,
+      "addressFamiliesByPeer":"none"
+    },
+    "gracefulRestartInfo":{
+      "endOfRibSend":{
+        "IPv4 Unicast":true
+      },
+      "endOfRibRecv":{
+        "IPv4 Unicast":true
+      }
+    },
+    "messageStats":{
+      "depthInq":0,
+      "depthOutq":0,
+      "opensSent":118,
+      "opensRecv":24,
+      "notificationsSent":28,
+      "notificationsRecv":20,
+      "updatesSent":55,
+      "updatesRecv":55,
+      "keepalivesSent":604829,
+      "keepalivesRecv":604898,
+      "routeRefreshSent":1,
+      "routeRefreshRecv":0,
+      "capabilitySent":0,
+      "capabilityRecv":0,
+      "totalSent":605031,
+      "totalRecv":604997
+    },
+    "minBtwnAdvertisementRunsTimerMsecs":0,
+    "updateSource":"1.1.1.1",
+    "addressFamilyInfo":{
+      "IPv4 Unicast":{
+        "updateGroupId":19,
+        "subGroupId":28,
+        "packetQueueLength":0,
+        "inboundSoftConfigPermit":true,
+        "acceptedPrefixCounter":2
+      }
+    },
+    "connectionsEstablished":20,
+    "connectionsDropped":19,
+    "lastResetTimerMsecs":37619000,
+    "lastResetDueTo":"Admin. shutdown",
+    "hostLocal":"1.1.1.1",
+    "portLocal":44173,
+    "hostForeign":"1.1.1.2",
+    "portForeign":179,
+    "nexthop":"1.1.1.1",
+    "nexthopGlobal":"2001:db8:c18:1::1",
+    "nexthopLocal":"fe80::a00:27ff:fee6:bfb2",
+    "bgpConnection":"sharedNetwork",
+    "connectRetryTimer":10,
+    "estimatedRttInMsecs":1,
+    "readThread":"on",
+    "writeThread":"on"
+  },
+  "2012:1:1:1::2":{
+    "remoteAs":30,
+    "localAs":10,
+    "nbrExternalLink":true,
+    "nbrDesc":"rtr3",
+    "hostname":"rtr3",
+    "bgpVersion":4,
+    "remoteRouterId":"100.100.100.4",
+    "bgpState":"Established",
+    "bgpTimerUp":1552642000,
+    "bgpTimerUpMsec":1552324000,
+    "bgpTimerUpString":"02w3d23h",
+    "bgpTimerUpEstablishedEpoch":1535621394,
+    "bgpTimerLastRead":2000,
+    "bgpTimerLastWrite":3000,
+    "bgpInUpdateElapsedTimeMsecs":83478000,
+    "bgpTimerHoldTimeMsecs":9000,
+    "bgpTimerKeepAliveIntervalMsecs":3000,
+    "neighborCapabilities":{
+      "4byteAs":"advertisedAndReceived",
+      "addPath":{
+        "IPv4 Unicast":{
+          "rxAdvertisedAndReceived":true
+        },
+        "IPv6 Unicast":{
+          "rxAdvertisedAndReceived":true
+        }
+      },
+      "routeRefresh":"advertisedAndReceivedOldNew",
+      "multiprotocolExtensions":{
+        "IPv4 Unicast":{
+          "advertisedAndReceived":true
+        },
+        "IPv6 Unicast":{
+          "advertisedAndReceived":true
+        }
+      },
+      "hostName":{
+        "advHostName":"rtr1",
+        "advDomainName":"n\/a",
+        "rcvHostName":"rtr3",
+        "rcvDomainName":"n\/a"
+      },
+      "gracefulRestart":"advertisedAndReceived",
+      "gracefulRestartRemoteTimerMsecs":120000,
+      "addressFamiliesByPeer":"none"
+    },
+    "gracefulRestartInfo":{
+      "endOfRibSend":{
+        "IPv4 Unicast":true,
+        "IPv6 Unicast":true
+      },
+      "endOfRibRecv":{
+        "IPv4 Unicast":true,
+        "IPv6 Unicast":true
+      }
+    },
+    "messageStats":{
+      "depthInq":0,
+      "depthOutq":0,
+      "opensSent":45,
+      "opensRecv":37,
+      "notificationsSent":64,
+      "notificationsRecv":10,
+      "updatesSent":137,
+      "updatesRecv":84,
+      "keepalivesSent":605098,
+      "keepalivesRecv":605160,
+      "routeRefreshSent":0,
+      "routeRefreshRecv":0,
+      "capabilitySent":0,
+      "capabilityRecv":0,
+      "totalSent":605344,
+      "totalRecv":605291
+    },
+    "minBtwnAdvertisementRunsTimerMsecs":0,
+    "updateSource":"2012:1:1:1::1",
+    "addressFamilyInfo":{
+      "IPv4 Unicast":{
+        "updateGroupId":19,
+        "subGroupId":28,
+        "packetQueueLength":0,
+        "acceptedPrefixCounter":0
+      },
+      "IPv6 Unicast":{
+        "updateGroupId":34,
+        "subGroupId":49,
+        "packetQueueLength":0,
+        "acceptedPrefixCounter":2
+      }
+    },
+    "connectionsEstablished":29,
+    "connectionsDropped":28,
+    "lastResetTimerMsecs":83844000,
+    "lastResetDueTo":"BGP Notification send",
+    "lastErrorCodeSubcode":"0607",
+    "lastNotificationReason":"Cease\/Connection collision resolution",
+    "hostLocal":"2012:1:1:1::1",
+    "portLocal":179,
+    "hostForeign":"2012:1:1:1::2",
+    "portForeign":48151,
+    "nexthop":"2.2.2.2",
+    "nexthopGlobal":"2012:1:1:1::1",
+    "nexthopLocal":"fe80::a00:27ff:fe72:a83d",
+    "bgpConnection":"sharedNetwork",
+    "connectRetryTimer":10,
+    "estimatedRttInMsecs":3,
+    "readThread":"on",
+    "writeThread":"on"
+  }
+}
