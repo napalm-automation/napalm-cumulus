@@ -548,10 +548,10 @@ class CumulusDriver(NetworkDriver):
                     if not (af in supported_afis):
                         continue
                     route_info = {}
-                    dev_bgp_peer_advertised_routes = self._send_command
-                  	    ('net show bgp {} neighbor {} advertised-routes | grep 
-                        "Total number of prefixes"'
-                        .format(af, peer)).strip().split()[-1]
+                    dev_bgp_peer_advertised_routes = \
+                        self._send_command('net show bgp {} neighbor {} '
+                                           'advertised-routes | grep "Total number of prefixes"'
+                                           .format(af, peer)).strip().split()[-1]
                     if not dev_bgp_peer_advertised_routes.isnumeric():
                         dev_bgp_peer_advertised_routes = 0
                     if not is_enabled:
