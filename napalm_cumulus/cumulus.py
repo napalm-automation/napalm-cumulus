@@ -17,21 +17,15 @@ Napalm driver for Cumulus.
 
 Read https://napalm.readthedocs.io for more information.
 """
-
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import re
 import json
 import ipaddress
 from datetime import datetime
-from pytz import timezone
 from collections import defaultdict
 
 from netmiko import ConnectHandler
 from netmiko.ssh_exception import NetMikoTimeoutException
 import napalm.base.constants as C
-from napalm.base.utils import py23_compat
 from napalm.base.utils import string_parsers
 from napalm.base.base import NetworkDriver
 from napalm.base.exceptions import (
@@ -142,20 +136,16 @@ class CumulusDriver(NetworkDriver):
             self.changed = False
 
     def _send_command(self, command):
+        if command.startswith("sudo"):
+            self.device.enable()
         response = self.device.send_command(command)
-        if 'Permission denied' or 'ERROR: 'in response:
-            try:
-                if self.netmiko_optional_args.get('secret'):
-                    self.device.enable()
-                    response = self.device.send_command(command)
-                    self.device.exit_enable_mode()
-                    return response
-            except ValueError:
-                raise ConnectionException('Super User Elevation Required. Set Netmiko secret argument')
+        if command.startswith("sudo"):
+            self.device.exit_enable_mode()
+        return response
 
     def get_facts(self):
         facts = {
-            'vendor': py23_compat.text_type('Cumulus')
+            'vendor': 'Cumulus'
         }
 
         # Get "net show hostname" output.
@@ -184,17 +174,18 @@ class CumulusDriver(NetworkDriver):
         except ValueError:
             interfaces = json.loads(self.device.send_command('net show interface all json'))
 
-        facts['hostname'] = facts['fqdn'] = py23_compat.text_type(hostname)
-        facts['os_version'] = py23_compat.text_type(os_version)
-        facts['model'] = py23_compat.text_type(model)
+        facts['hostname'] = facts['fqdn'] = hostname
+        facts['os_version'] = os_version
+        facts['model'] = model
         facts['uptime'] = string_parsers.convert_uptime_string_seconds(uptime)
-        facts['serial_number'] = py23_compat.text_type(serial_number)
+        facts['serial_number'] = serial_number
         facts['interface_list'] = string_parsers.sorted_nicely(interfaces.keys())
         return facts
 
-    def get_arp_table(self):
+    def get_arp_table(self, vrf=""):
 
         """
+        TODO replace with ip neighbor command since arp is being deprecated
         'show arp' output example:
         Address                  HWtype  HWaddress           Flags Mask            Iface
         10.129.2.254             ether   00:50:56:97:af:b1   C                     eth0
@@ -203,6 +194,8 @@ class CumulusDriver(NetworkDriver):
         10.129.2.97              ether   00:50:56:9f:64:09   C                     eth0
         192.168.1.3              ether   00:50:56:86:7b:06   C                     eth1
         """
+        if vrf:
+            raise NotImplementedError
         output = self._send_command('arp -n')
         output = output.split("\n")
         output = output[1:]
@@ -211,15 +204,15 @@ class CumulusDriver(NetworkDriver):
         for line in output:
             line = line.split()
             if "incomplete" in line[1]:
-                macaddr = py23_compat.text_type("00:00:00:00:00:00")
+                macaddr = "00:00:00:00:00:00"
             else:
-                macaddr = py23_compat.text_type(line[2])
+                macaddr = line[2]
 
             arp_table.append(
                 {
-                    'interface': py23_compat.text_type(line[-1]),
+                    'interface': line[-1],
                     'mac': macaddr,
-                    'ip': py23_compat.text_type(line[0]),
+                    'ip': line[0],
                     'age': 0.0
                 }
             )
@@ -235,7 +228,7 @@ class CumulusDriver(NetworkDriver):
          133.130.120.204 133.243.238.164  2 u   46   64  377    7.717  987996. 1669.77
         """
 
-        output = self._send_command("net show time ntp servers")
+        output = self._send_command("ntpq -np")
         output = output.split("\n")[2:]
         ntp_stats = list()
 
@@ -253,12 +246,12 @@ class CumulusDriver(NetworkDriver):
                 when = when if when != '-' else 0
 
                 ntp_stats.append({
-                    "remote": py23_compat.text_type(ip),
-                    "referenceid": py23_compat.text_type(refid),
+                    "remote": ip,
+                    "referenceid": refid,
                     "synchronized": bool(synchronized),
                     "stratum": int(st),
-                    "type": py23_compat.text_type(t),
-                    "when": py23_compat.text_type(when),
+                    "type": t,
+                    "when": when,
                     "hostpoll": int(hostpoll),
                     "reachability": int(reachability),
                     "delay": float(delay),
@@ -294,7 +287,7 @@ class CumulusDriver(NetworkDriver):
         else:
             err = ""
 
-        if err is not "":
+        if err != "":
             ping_result["error"] = err
         else:
             # 'packet_info' example:
@@ -388,6 +381,12 @@ class CumulusDriver(NetworkDriver):
         return lldp
 
     def get_interfaces(self):
+        def _convert_speed(speed):
+            if speed.endswith("M") and speed.strip("M").isdigit():
+                return int(speed.strip("M"))
+            elif speed.endswith("G") and speed.strip("G").isdigit():
+                return int(speed.strip("G")) * 1000
+            return -1
         interfaces = {}
         # Get 'net show interface all json' output.
         output = self._send_command('net show interface all json')
@@ -396,69 +395,74 @@ class CumulusDriver(NetworkDriver):
             output_json = json.loads(output)
         except ValueError:
             output_json = json.loads(self.device.send_command('net show interface all json'))
-        for interface in output_json.keys():
-            interfaces[interface] = {}
-            if output_json[interface]['linkstate'] == "UP":
-                interfaces[interface]['is_up'] = True 
-                interfaces[interface]['is_enabled'] = True
-            elif output_json[interface]['linkstate'] == 'DN':
-                interfaces[interface]['is_up'] = False
-                interfaces[interface]['is_enabled'] = True
-            else:
-                # Link state is ADMIN DOWN
-                interfaces[interface]['is_up'] = False
-                interfaces[interface]['is_enabled'] = False
-            interfaces[interface]['description'] = py23_compat.text_type(
-                                            output_json[interface]['iface_obj']['description'])
-            speed_map = {'100M': 100, '1G': 1000, '10G': 10000, '40G': 40000, '100G': 100000}
-            try:
-                interfaces[interface]['speed'] = speed_map[output_json[interface]['speed']]
-            except KeyError:
-                interfaces[interface]['speed'] = -1
+        # Determine the current time on the system, to be used when determining the last flap
+        current_time = self._send_command("net show time")
+        current_time = datetime.strptime(current_time.rstrip(' '), "%a %d %b %Y %I:%M:%S %p %Z")
+        for interface, iface_data in output_json.items():
+            interfaces[interface] = {
+                "description": iface_data['iface_obj']['description'],
+                "is_enabled": False if iface_data['linkstate'] == "ADMDN" else True,
+                "is_up": True if iface_data['linkstate'] == "UP" else False,
+                "mac_address": iface_data['iface_obj']['mac'],
+                "mtu": iface_data['iface_obj']['mtu'],
+                "speed": _convert_speed(iface_data['speed']),
+            }
 
-            interfaces[interface]['mac_address'] = py23_compat.text_type(
-                                            output_json[interface]['iface_obj']['mac'])
         # Calculate last interface flap time. Dependent on router daemon
         # Send command to determine if router daemon is running. Not dependent on quagga or frr
         daemon_check = self._send_command("sudo vtysh -c 'show version'")
         if 'Exiting: failed to connect to any daemons.' in daemon_check:
             for interface in interfaces.keys():
-                interfaces[interface]['last_flapped'] = -1
-        else:
-            show_int_output = self._send_command("sudo vtysh -c 'show interface'")
-            remote_system_date = self._send_command('date "+%Y/%m/%d %H:%M:%S.%6N"')
-            remote_system_date = datetime.strptime(remote_system_date, "%Y/%m/%d %H:%M:%S.%f")
-            split_int_output = list(filter(None, re.split("(?!Interface Type)Interface", show_int_output)))
-            for block in split_int_output:
-                split_block = block.split("\n")
-                for line in split_block:
-                    if 'line protocol' in line:
-                        interface = line.split()
-                        interface = interface[0]
-                    if 'Link ups' in line:
-                        if int(line.split()[2]) < 2:
-                            never_flapped = True
-                            break
-                        else:
-                            never_flapped = False
-                            last_link_up_date = line.split()[4] + " " + line.split()[5]
-                            last_link_up_date = datetime.strptime(last_link_up_date, "%Y/%m/%d %H:%M:%S.%f")
-                    else: 
-                        never_flapped = False
-                        if 'Link downs' in line:
-                            last_link_down_date = line.split()[4] + " " + line.split()[5]
-                            last_link_down_date = datetime.strptime(last_link_down_date, "%Y/%m/%d %H:%M:%S.%f")
-                if never_flapped:
-                    interfaces[interface]['last_flapped'] = -1
-                else:
-                    if last_link_up_date > last_link_down_date:
-                        interfaces[interface]['last_flapped']  = (remote_system_date - last_link_up_date).total_seconds()
-                    else:
-                        interfaces[interface]['last_flapped']  = (remote_system_date - last_link_down_date).total_seconds()
+                interfaces[interface]['last_flapped'] = -1.0
+            return interfaces
+
+        show_int_output = self._send_command("sudo vtysh -c 'show interface'")
+        split_int_output = list(
+            filter(None, re.split("(?!Interface Type)Interface", show_int_output))
+        )
+        for block in split_int_output:
+            lines = block.splitlines()
+            last_down = None
+            last_up = None
+            iface = None
+            for l in lines:
+                if "is up" in l or "is down" in l:
+                    iface = l.split()[0].lower()
+                # Grab the last two elements and make them a string
+                elif "Link ups: " in l:
+                    last_up = " ".join(l.split()[-2:])
+                elif "Link downs: " in l:
+                    last_down = " ".join(l.split()[-2:])
+                    break
+            # If we don't have the interface already move on
+            if not interfaces.get(iface):
+                continue
+            # If we are unable to find either the up or the down message return -1
+            if not(last_down or last_up):
+                interfaces[iface]["last_flapped"] = -1.0
+            # If both interfaces have never flapped return -1
+            elif all(["never" in i for i in [last_up, last_down]]):
+                interfaces[iface]["last_flapped"] = -1.0
+            else:
+                # Convert to datetime while not choking on the never
+                last_down = (
+                    datetime(1970, 1, 1)
+                    if "never" in last_down
+                    else datetime.strptime(last_down, "%Y/%m/%d %H:%M:%S.%f")
+                )
+                last_up = (
+                    datetime(1970, 1, 1)
+                    if "never" in last_up
+                    else datetime.strptime(last_up, "%Y/%m/%d %H:%M:%S.%f")
+                )
+                # figure out which is the most recent
+                most_recent = last_up if last_up > last_down else last_down
+                last_flap = current_time - most_recent
+                interfaces[iface]["last_flapped"] = float(last_flap.seconds)
         return interfaces
 
     def get_interfaces_ip(self):
-        interfaces_ip = {}
+        interfaces_ip = defaultdict(lambda: defaultdict(lambda: defaultdict()))
         # Get net show interface all json output.
         output = self._send_command('net show interface all json')
         # Handling bad send_command_timing return output.
@@ -469,16 +473,15 @@ class CumulusDriver(NetworkDriver):
         for interface in output_json:
             if not output_json[interface]['iface_obj']['ip_address']['allentries']:
                 continue
-            else:
-                for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
-                    ip_ver = ipaddress.ip_interface(py23_compat.text_type(ip_address)).version
-                    ip_ver = 'ipv{}'.format(ip_ver)
-                    ip, prefix = ip_address.split('/')
-                    interfaces_ip.update({interface: {ip_ver: {ip: {'prefix_length': int(prefix)}}}})
+            for ip_address in output_json[interface]['iface_obj']['ip_address']['allentries']:
+                ip_ver = ipaddress.ip_interface(ip_address).version
+                ip_ver = 'ipv{}'.format(ip_ver)
+                ip, prefix = ip_address.split('/')
+                interfaces_ip[interface][ip_ver][ip] = {"prefix_length": int(prefix)}
 
         return interfaces_ip
 
-    def get_config(self, retrieve='all'):
+    def get_config(self, retrieve='all', full=False):
         # Initialise the configuration dictionary
         configuration = {
             'startup': '',
@@ -490,13 +493,13 @@ class CumulusDriver(NetworkDriver):
             # Get net show configuration output.
             output = self._send_command('net show configuration')
 
-            configuration['running'] = py23_compat.text_type(output)
+            configuration['running'] = output
 
         if retrieve in ('candidate', 'all'):
             # Get net pending output.
             output = self._send_command('net pending json')
 
-            configuration['candidate'] = py23_compat.text_type(output)
+            configuration['candidate'] = output
 
         return configuration
 

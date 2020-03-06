@@ -1,0 +1,67 @@
+Interface bridge is up, line protocol is down
+  Link ups:       0    last: (never)
+  Link downs:     2    last: 2020/03/04 22:45:13.63
+  PTM status: disabled
+  vrf: default
+  index 61 metric 0 mtu 9214 speed 0 
+  flags: <UP,BROADCAST,MULTICAST>
+  Type: Ethernet
+  HWaddr: b8:59:9f:78:79:bc
+  Interface Type Bridge
+  Bridge VLAN-aware: yes
+Interface eth0 is up, line protocol is down
+  Link ups:       5    last: 2020/03/05 04:10:00.00
+  Link downs:     4    last: 2020/03/05 04:16:30.00
+  PTM status: disabled
+  vrf: default
+  index 2 metric 0 mtu 1500 speed 4294967295 
+  flags: <UP,BROADCAST,MULTICAST>
+  Type: Ethernet
+  HWaddr: b8:59:9f:c0:ed:4e
+  Interface Type Other
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  PTM status: disabled
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 10.16.254.167/32
+  Interface Type Other
+Interface swp1 is up, line protocol is down
+  Link ups:       5    last: 2020/03/05 04:16:00.00
+  Link downs:     4    last: 2020/03/04 20:39:51.68
+  PTM status: disabled
+  vrf: default
+  OS Description: host:
+  index 4 metric 0 mtu 9214 speed 25000 
+  flags: <UP,BROADCAST,MULTICAST>
+  Type: Ethernet
+  HWaddr: b8:59:9f:78:79:bc
+  Interface Type Other
+  Master interface: bridge
+Interface swp2 is up, line protocol is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  PTM status: disabled
+  vrf: default
+  OS Description: host:
+  index 5 metric 0 mtu 9214 speed 25000 
+  flags: <UP,BROADCAST,MULTICAST>
+  Type: Ethernet
+  HWaddr: b8:59:9f:78:79:bd
+  Interface Type Other
+  Master interface: bridge
+Interface swp3 is up, line protocol is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  PTM status: disabled
+  vrf: default
+  OS Description: host:
+  index 6 metric 0 mtu 9214 speed 25000 
+  flags: <UP,BROADCAST,MULTICAST>
+  Type: Ethernet
+  HWaddr: b8:59:9f:78:79:be
+  Interface Type Other
+  Master interface: bridge

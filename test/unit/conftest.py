@@ -53,7 +53,15 @@ class PatchedCumulusDriver(cumulus.CumulusDriver):
 class FakeCumulusDevice(BaseTestDouble):
     """Cumulus device test double."""
 
+    # The following three functions are not needed for testing, but are still called
+    # so override them so tests pass
     def disconnect(self):
+        pass
+
+    def enable(self):
+        pass
+
+    def exit_enable_mode(self):
         pass
 
     def send_command(self, command):

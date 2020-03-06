@@ -1,5 +1,5 @@
 setuptools>=38.4.0
-napalm>=2.0.0
+-e git+git://github.com/napalm-automation/napalm.git@fdf91d9de5e0ee41ad0db748ac7b7af0719b246e#egg=napalm
 netmiko>=2.2.2
 pytz
 
