@@ -362,29 +362,33 @@ class CumulusDriver(NetworkDriver):
 
             return ping_result
 
-    def _get_interface_neighbors(self, neighbors_list):
-        neighbors = []
-        for neighbor in neighbors_list:
-            temp = {}
-            temp['hostname'] = neighbor['adj_hostname']
-            temp['port'] = neighbor['adj_port']
-            neighbors.append(temp)
-        return neighbors
-
     def get_lldp_neighbors(self):
         """Cumulus get_lldp_neighbors."""
         lldp = {}
-        command = 'net show interface all json'
+        command = 'net show lldp json'
 
         try:
             intf_output = json.loads(self._send_command(command))
         except ValueError:
             intf_output = json.loads(self.device.send_command(command))
 
-        for interface in intf_output:
-            if intf_output[interface]['iface_obj']['lldp'] is not None:
-                lldp[interface] = self._get_interface_neighbors(
-                                        intf_output[interface]['iface_obj']['lldp'])
+        for interface in intf_output['lldp'][0]['interface']:
+            if interface['name'] is not None or interface['name'] != "null":
+                try:
+                    neighbors = []
+                    hostname = interface['chassis'][0]['name'][0]['value']
+                    if interface['port'][0]['id'][0]['type'] == 'ifname' or interface['port'][0]['id'][0]['type'] == 'local':
+                        port = interface['port'][0]['id'][0]['value']
+                    else:
+                        port = interface['port'][0]['descr'][0]['value']
+                    temp = {}
+                    temp['hostname'] = hostname
+                    temp['port'] = port
+                    neighbors.append(temp)
+                    name = interface['name']
+                    lldp[name] = neighbors
+                except KeyError:
+                    pass
         return lldp
 
     def get_interfaces(self):
@@ -399,7 +403,7 @@ class CumulusDriver(NetworkDriver):
         for interface in output_json.keys():
             interfaces[interface] = {}
             if output_json[interface]['linkstate'] == "UP":
-                interfaces[interface]['is_up'] = True 
+                interfaces[interface]['is_up'] = True
                 interfaces[interface]['is_enabled'] = True
             elif output_json[interface]['linkstate'] == 'DN':
                 interfaces[interface]['is_up'] = False
@@ -443,7 +447,7 @@ class CumulusDriver(NetworkDriver):
                             never_flapped = False
                             last_link_up_date = line.split()[4] + " " + line.split()[5]
                             last_link_up_date = datetime.strptime(last_link_up_date, "%Y/%m/%d %H:%M:%S.%f")
-                    else: 
+                    else:
                         never_flapped = False
                         if 'Link downs' in line:
                             last_link_down_date = line.split()[4] + " " + line.split()[5]
